@@ -68,9 +68,4 @@ Building this project helped me deepen my understanding of:
    - Layout thrashing prevention
    - Memory leak avoidance
 
-## 🖥️ Running Locally
-
-```bash
-git clone https://github.com/abdulmsoomro1/RentalCars-ClonE.git
-cd RentalCars-ClonE
 # Open index.html in your browser
