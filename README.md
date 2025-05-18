@@ -2,9 +2,9 @@
 Rentalcars.com Frontend Clone
 
 
-A fully responsive frontend clone of Rentalcars.com built with pure HTML, CSS, and JavaScript. Developed as a portfolio piece to demonstrate modern frontend development skills.
+A fully responsive frontend clone of Rentalcars.com built with pure HTML, CSS, and JavaScript. Developed as a portfolio piece to demonstrate modern front-end development skills.
 
-**Live Demo:** [GitHub Pages](https://abdulmsoomro1.github.io/RentalCars-ClonE/)  
+**Live Demo:** [GitHub Pages](https://abdulmsoomro1.github.io/RentalCars-ClonE/)
 **Source Code:** [GitHub Repository](https://github.com/abdulmsoomro1/RentalCars-ClonE)
 
 ## 🚀 Key Features
