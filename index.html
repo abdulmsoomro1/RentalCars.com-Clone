@@ -1,0 +1,128 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentalcars Clone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">Rentalcars Clone</a>
+        <div class="nav-links">
+            <button class="btn btn-secondary">Sign Up</button>
+            <button class="btn btn-primary">Login</button>
+            <svg onclick="toggleSettings()" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#003580" style="cursor: pointer">
+                <path d="M24 13.616v-3.232c-1.651-.587-2.693-2.237-2.316-3.957.379-1.729 1.874-3.02 3.609-3.02v-2h-4l-4 7.945-4-7.945h-4v2c1.735 0 3.23 1.291 3.609 3.02.377 1.72-.665 3.37-2.316 3.957v3.232c1.651.587 2.693 2.237 2.316 3.957-.379 1.729-1.874 3.02-3.609 3.02v2h4l4-7.945 4 7.945h4v-2c-1.735 0-3.23-1.291-3.609-3.02-.377-1.72.665-3.37 2.316-3.957zm-12 4.384c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"/>
+            </svg>
+        </div>
+    </header>
+
+    <div class="settings-menu" id="settingsMenu">
+        <button class="menu-item">English</button>
+        <button class="menu-item">USD ($)</button>
+    </div>
+
+    <main>
+        <div class="search-container">
+            <form class="search-form" id="searchForm">
+                <div class="form-group">
+                    <select required>
+                        <option value="">Pick-up Location</option>
+                        <option>New York</option>
+                        <option>London</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <input type="date" required>
+                </div>
+                <button type="submit" class="btn btn-secondary">Search Cars</button>
+            </form>
+        </div>
+
+        <div class="results-grid" id="resultsGrid"></div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h3>Company</h3>
+                <p>About Us</p>
+                <p>Careers</p>
+            </div>
+            <div>
+                <h3>Support</h3>
+                <p>Help Center</p>
+                <p>Contact Us</p>
+            </div>
+            <div>
+                <h3>Legal</h3>
+                <p>Privacy Policy</p>
+                <p>Terms of Service</p>
+            </div>
+            <div>
+                <h3>Follow Us</h3>
+                <p>Facebook</p>
+                <p>Twitter</p>
+            </div>
+        </div>
+        <div class="disclaimer">
+            Cloned by AbdulRahim Soomro | For Educational Purposes Only | Created for Portfolio Showcase
+        </div>
+    </footer>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="modal" id="loginModal">
+        <h2>Login</h2>
+        <form>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <button class="btn btn-primary">Login</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
